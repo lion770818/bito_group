@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  bito_group:
+    image: liuleo/bito_group:v1
+    restart: always
+    container_name: bito_group
+    volumes:
+      - ./log:/app/log
+    environment:
+      - EnvFlag=1
+
+      - DB_IP=192.168.100.139
+      - DB_Port=3306
+      - DB_Name=live
+      - DB_User=root
+      - DB_Password=123456
+
+      - Redis_IP=192.168.100.139
+      - Redis_Port=6379
+    ports:
+      - "8080:8080"
+ 
