@@ -1,0 +1,14 @@
+
+# mac 暫存資料
+.DS_Store
+
+# log 資料夾
+*.log
+
+# 編譯的執行檔 
+*.exe
+__debug_bin
+
+
+# Windows的暫存檔
+desktop.ini

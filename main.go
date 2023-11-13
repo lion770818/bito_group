@@ -1,70 +1,40 @@
 package main
 
 import (
-	"bito_group/docs"
-	"encoding/json"
-	"log"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
-	//docs "github.com/go-project-name/docs"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"bito_group/config"
+	"bito_group/internal/common/logs"
+	"bito_group/internal/common/signals"
+	"bito_group/internal/servers"
+	"bito_group/internal/servers/web"
 )
 
-// PingExample godoc
-// @Summary ping example
-// @Schemes
-// @Description do ping
-// @Tags example
-// @Accept json
-// @Produce json
-// @Success 200 {string} Helloworld
-// @Router /example/helloworld [get]
-func Helloworld(g *gin.Context) {
-	g.JSON(http.StatusOK, "helloworld")
-}
+// NewServers 通过配置文件初始化 Repo 依赖, 然后初始化 App, 最后组装为 Server
+// 比如 UserRepo -> UserApp -> WebServer
+func NewServers(cfg *config.SugaredConfig) servers.ServerInterface {
 
-func AddSinglePersonAndMatch(c *gin.Context) {
+	repos := servers.NewRepos(cfg) // config 設定好 db
+	apps := servers.NewApps(repos) // db 創建 usercase, 返回usecase
 
-	name := c.PostForm("name")     // 姓名、
-	height := c.PostForm("height") // 身高
-	gender := c.PostForm("gender") // 性別
+	servers := servers.NewServers()
+	servers.AddServer(web.NewWebServer(cfg, apps)) // 啟動 web server
 
-	log.Printf("name:%v, height:%v, gender:%v", name, height, gender)
-
-	m := map[string]string{"status": "ok"}
-	j, _ := json.Marshal(m)
-	c.Data(http.StatusOK, "application/json", j)
-}
-
-func RemoveSinglePerson(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"狀態": "ok",
-	})
-}
-
-func QuerySinglePeople(c *gin.Context) {
-	m := map[string]string{"status": "ok"}
-	j, _ := json.Marshal(m)
-	c.Data(http.StatusOK, "application/json", j)
+	return servers
 }
 
 func main() {
 
-	router := gin.New()
+	// 初始化 config 配置
+	cfg := config.NewConfig("./config.yaml")
+	// 初始化日志
+	logs.Init(cfg.Log)
 
-	docs.SwaggerInfo.BasePath = "/api/v1"
-	v1 := router.Group("/api/v1")
-	{
+	// 獲得 servers, 比如 WebServer, Websocket, RpcServer
+	servers := NewServers(cfg)
 
-		v1.POST("/AddSinglePersonAndMatch", AddSinglePersonAndMatch)
-		v1.DELETE("/RemoveSinglePerson", RemoveSinglePerson)
-		v1.POST("/QuerySinglePeople", QuerySinglePeople)
+	// 啟動 servers
+	servers.AsyncStart()
 
-		v1.GET("/helloworld", Helloworld)
-	}
+	logs.Debugf("優雅關閉 等待訊號中...")
+	signals.WaitWith(servers.Stop)
 
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	router.Run("0.0.0.0:8080")
 }

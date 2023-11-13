@@ -14,8 +14,10 @@ WORKDIR /app
 # 拷貝編譯好的執行檔案 bito_group
 COPY --from=build-env /src/bito_group/bito_group /app/
 
+# 拷貝 bito_group 的 config.yaml
+COPY --from=build-env /src/bito_group/config.yaml /app/
+
 #bito_group 開放的port 
 EXPOSE 8080
-
 
 ENTRYPOINT ./bito_group

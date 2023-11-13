@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   bito_group:
-    image: liuleo/bito_group:v1
+    image: liuleo/bito_group:v2
     restart: always
     container_name: bito_group
     volumes:
