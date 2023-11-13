@@ -14,6 +14,8 @@ type UserRepo interface {
 	GetUserByLoginParams(*model.LoginParams) (*model.User, error)
 	GetUserByRegisterParams(*model.RegisterParams) (bool, error)
 	Save(*model.User) (*model.User, error)
+
+	QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_UserInfo, error)
 }
 
 var (
@@ -121,4 +123,17 @@ func (r *MysqlUserRepo) Save(user *model.User) (*model.User, error) {
 	user.ID, _ = model.NewUserID(check)
 
 	return user, nil
+}
+
+func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_UserInfo, error) {
+
+	if len(check.Username) == 0 {
+		return nil, ErrUserPointNil
+	}
+
+	logs.Debugf("QuerySinglePeople Username=%v", check.Username)
+
+	// TODO
+
+	return nil, nil
 }

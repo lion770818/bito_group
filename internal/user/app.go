@@ -17,6 +17,7 @@ type UserAppInterface interface {
 
 	Get(userID *model.UserID) (*model.S2C_UserInfo, error)
 	Del(userID *model.UserID) error
+	QuerySinglePeople(model.UserQueryCheck) ([]model.S2C_UserInfo, error)
 }
 
 type UserApp struct {
@@ -91,4 +92,9 @@ func (u *UserApp) Del(userID *model.UserID) error {
 	err = u.userRepo.Del(userID)
 
 	return err
+}
+
+func (u *UserApp) QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_UserInfo, error) {
+
+	return nil, nil
 }

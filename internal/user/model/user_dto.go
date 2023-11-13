@@ -34,6 +34,9 @@ type S2C_Login struct {
 type S2C_UserInfo struct {
 	UserID   int64  `json:"user_id"`
 	Username string `json:"username"`
+	Gender   string `json:"gender"`
+	Height   string `json:"height"`
+
 	Currency string `json:"currency"`
 	Amount   string `json:"amount"`
 }
