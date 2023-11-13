@@ -263,3 +263,10 @@ func NewRate(rate decimal.Decimal) (*Rate, error) {
 func (r *Rate) Exchange(amount *Amount) (*Amount, error) {
 	return NewAmount(amount.Value().Mul(r.rate))
 }
+
+type UserQueryCheck struct {
+	UserId   int64
+	Username string // 用戶名
+	Gender   string // 性別
+	Height   int    // 身高
+}

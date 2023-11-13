@@ -75,11 +75,6 @@ func (u *UserHandler) UserInfo(c *gin.Context) {
 	response.Ok(c, userInfo)
 }
 
-type UserID2 struct {
-	UserId   int
-	Username string
-}
-
 // UserInfo 刪除單一用戶
 func (u *UserHandler) RemoveSinglePerson(c *gin.Context) {
 
@@ -148,4 +143,36 @@ func (u *UserHandler) Register(c *gin.Context) {
 	}
 
 	response.Ok(c, user)
+}
+
+func (u *UserHandler) QuerySinglePeople(c *gin.Context) {
+
+	req := &model.UserCheck{}
+	if err := c.ShouldBindJSON(req); err != nil {
+		response.Err(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userID, err := model.NewUserID(*req)
+	if err != nil {
+		response.Err(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userInfo, err := u.UserApp.Get(userID)
+	if err != nil {
+		logs.Errorf("[UserInfo] failed, err: %+v", err)
+		response.Err(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = u.UserApp.Del(userID)
+	if err != nil {
+		logs.Errorf("[UserInfo] failed, err: %+v", err)
+		response.Err(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// 返回用户信息
+	response.Ok(c, userInfo)
 }
