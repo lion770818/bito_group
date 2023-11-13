@@ -2,21 +2,24 @@ package user
 
 import (
 	"bito_group/internal/user/model"
-	"log"
 	"testing"
 )
 
 func TestQuerySinglePeople(t *testing.T) {
 
-	check := model.UserQueryCheck{}
+	check := model.UserQueryCheck{
+		Username: "cat111",
+		Gender:   "男",
+		Height:   175,
+	}
 
 	userRepo := NewMysqlUserRepo(nil)
 	list, err := userRepo.QuerySinglePeople(check)
 	if err != nil {
-		log.Printf("querySinglePeople err=%v", err)
+		t.Errorf("querySinglePeople err=%v", err)
 		return
 	}
 
-	log.Printf("querySinglePeople list=%v", list)
+	t.Log("querySinglePeople succes list=", list)
 
 }

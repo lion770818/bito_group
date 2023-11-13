@@ -128,10 +128,10 @@ func (r *MysqlUserRepo) Save(user *model.User) (*model.User, error) {
 func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_UserInfo, error) {
 
 	if len(check.Username) == 0 {
-		return nil, ErrUserPointNil
+		return nil, ErrUserNotFound
 	}
 
-	logs.Debugf("QuerySinglePeople Username=%v", check.Username)
+	//logs.Debugf("QuerySinglePeople Username=%v", check.Username)
 
 	// TODO
 
