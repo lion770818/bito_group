@@ -36,6 +36,10 @@ windos => 環境變數內設定
 "github.com/swaggo/swag/example/celler/httputil"
 "github.com/swaggo/swag/example/celler/model"
 
+# swagger 文件 API URL
+
+http://127.0.0.1:8081/swagger/index.html
+
 # post man 測試 api 腳本, 請匯入 postman
 
 bito_group.postman_collection.json
