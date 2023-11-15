@@ -27,6 +27,6 @@ func WithRouter(s *WebServer) {
 	// 路由
 	//api.GET("/UserInfo", userHandler.UserInfo)
 	api.POST("/AddSinglePersonAndMatch", userHandler.AddSinglePersonAndMatch)
-	//api.DELETE("/RemoveSinglePerson", userHandler.RemoveSinglePerson)
-	//api.POST("/QuerySinglePeople", userHandler.QuerySinglePeople)
+	api.DELETE("/RemoveSinglePerson", userHandler.RemoveSinglePerson)
+	api.POST("/QuerySinglePeople", userHandler.QuerySinglePeople)
 }

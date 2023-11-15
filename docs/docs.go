@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/v1/AddSinglePersonAndMatch": {
             "post": {
-                "description": "Register",
+                "description": "Add a new user to the matching system and find any possible matches for the new user",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "user"
                 ],
                 "summary": "註冊帳號",
                 "parameters": [
@@ -36,6 +36,98 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/model.C2S_Register"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.S2C_Login"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/QuerySinglePeople": {
+            "post": {
+                "description": "QuerySinglePeople : Find the most N possible matched single people",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "尋找最多 N 個可能匹配的單身人士",
+                "parameters": [
+                    {
+                        "description": "要匹配的單身人士",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.C2S_Register"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.S2C_Login"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/RemoveSinglePerson": {
+            "delete": {
+                "description": "Remove a user from the matching system so that the user cannot be matched anymore",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "移除帳號",
+                "parameters": [
+                    {
+                        "description": "要檢查的帳號",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserCheck"
                         }
                     }
                 ],
@@ -81,6 +173,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserCheck": {
+            "type": "object",
+            "properties": {
+                "userId": {
                     "type": "integer"
                 },
                 "username": {
