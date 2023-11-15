@@ -1,7 +1,6 @@
 package user
 
 import (
-	"bito_group/internal/common/logs"
 	"bito_group/internal/user/model"
 
 	"errors"
@@ -116,7 +115,7 @@ func (r *MysqlUserRepo) Save(user *model.User) (*model.User, error) {
 		return nil, ErrUserPointNil
 	}
 
-	logs.Debugf("Save Username:%s, Gender:%d, Height:%d", user.Username, user.Gender, user.Height)
+	//logs.Debugf("Save Username:%s, Gender:%d, Height:%d", user.Username, user.Gender, user.Height)
 	r.UserMap[user.Username.Value()] = *user
 
 	check := model.UserCheck{
