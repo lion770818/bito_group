@@ -25,8 +25,8 @@ func WithRouter(s *WebServer) {
 	//api.Use(authMiddleware.Auth)
 
 	// 路由
-	api.GET("/user_info", userHandler.UserInfo)
-	api.POST("/AddSinglePersonAndMatch", userHandler.Register)
-	api.DELETE("/RemoveSinglePerson", userHandler.RemoveSinglePerson)
-	api.POST("/QuerySinglePeople", userHandler.QuerySinglePeople)
+	//api.GET("/UserInfo", userHandler.UserInfo)
+	api.POST("/AddSinglePersonAndMatch", userHandler.AddSinglePersonAndMatch)
+	//api.DELETE("/RemoveSinglePerson", userHandler.RemoveSinglePerson)
+	//api.POST("/QuerySinglePeople", userHandler.QuerySinglePeople)
 }

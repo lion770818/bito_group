@@ -1,11 +1,26 @@
+definitions:
+  model.C2S_Register:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /example/helloworld:
-    get:
+  /v1/AddSinglePersonAndMatch:
+    post:
       consumes:
       - application/json
-      description: do ping
+      description: Register
+      parameters:
+      - description: 要註冊的帳號
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.C2S_Register'
       produces:
       - application/json
       responses:
@@ -13,7 +28,11 @@ paths:
           description: OK
           schema:
             type: string
-      summary: ping example
+        "500":
+          description: fail
+          schema:
+            type: string
+      summary: 註冊帳號
       tags:
       - example
 swagger: "2.0"
