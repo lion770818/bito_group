@@ -7,13 +7,13 @@
 	},
 	"item": [
 		{
-			"name": "http://127.0.0.1:8080/auth/login",
+			"name": "http://127.0.0.1:8081/v1/AddSinglePersonAndMatch",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": 1,\r\n    \"username\": \"cat111\",\r\n    \"password\": \"1234\"\r\n}",
+					"raw": "{\r\n    \"userId\": 1,\r\n    \"username\": \"cat222\",\r\n    \"gender\":   1,\r\n    \"height\":   169,\r\n    \"password\": \"1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,7 +21,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8080/v1/AddSinglePersonAndMatch",
+					"raw": "http://127.0.0.1:8081/v1/AddSinglePersonAndMatch",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -29,7 +29,7 @@
 						"0",
 						"1"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"v1",
 						"AddSinglePersonAndMatch"
@@ -39,7 +39,71 @@
 			"response": []
 		},
 		{
-			"name": "http://127.0.0.1:8080/v1/RemoveSinglePerson",
+			"name": "http://127.0.0.1:8081/v1/AddSinglePersonAndMatch Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 1,\r\n    \"username\": \"girl002\",\r\n    \"gender\":   2,\r\n    \"height\":   169,\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8081/v1/AddSinglePersonAndMatch",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"AddSinglePersonAndMatch"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8081/v1/QuerySinglePeople",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"girl002\",\r\n    \"gender\":   2,\r\n    \"height\":   169,\r\n    \"needCount\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8081/v1/QuerySinglePeople",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8081",
+					"path": [
+						"v1",
+						"QuerySinglePeople"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8081/v1/RemoveSinglePerson",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -53,7 +117,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8080/v1/RemoveSinglePerson",
+					"raw": "http://127.0.0.1:8081/v1/RemoveSinglePerson",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -61,7 +125,7 @@
 						"0",
 						"1"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"v1",
 						"RemoveSinglePerson"
