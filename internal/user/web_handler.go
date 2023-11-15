@@ -8,7 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	//"github.com/swaggo/swag/example/celler/model"
 	_ "bito_group/docs"
 )
 
@@ -117,11 +116,10 @@ func (u *UserHandler) RemoveSinglePerson(c *gin.Context) {
 // @Tags example
 // @Accept json
 // @Produce json
-//
-//	@Param			message	body		model.C2S_Register	true	"要註冊的帳號"
-//
-// @Success 	200 	{string} 	register 	   account
-// @Failure		500	    {object}	string "fail"
+// @Param			message	body	model.C2S_Register		true		"要註冊的帳號"
+// @Success 	200 	{object} 	model.S2C_Login
+// @Failure     500		{object}	response.HTTPError
+// @Failure     400		{object}	response.HTTPError
 // @Router /v1/AddSinglePersonAndMatch [post]
 func (u *UserHandler) AddSinglePersonAndMatch(c *gin.Context) {
 	// @Param name query string true "用户姓名"
@@ -130,28 +128,22 @@ func (u *UserHandler) AddSinglePersonAndMatch(c *gin.Context) {
 
 	// 解析参数
 	if err = c.ShouldBindJSON(req); err != nil {
-		response.Err(c, http.StatusBadRequest, err.Error())
-		//response.ErrFromSwagger(c, http.StatusBadRequest, err.Error())
-		//httputil.NewError(c, http.StatusBadRequest, errors.New("test"))
+		//httputil.NewError(c, http.StatusBadRequest, err)
+		response.ErrFromSwagger(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// 转化为领域对象 + 参数验证
 	registerParams, err := req.ToDomain()
 	if err != nil {
-		logs.Errorf("[AddSinglePersonAndMatch] failed, err: %+v", err)
-		response.Err(c, http.StatusBadRequest, err.Error())
-		//response.ErrFromSwagger(c, http.StatusBadRequest, err.Error())
-		//httputil.NewError(c, http.StatusBadRequest, errors.New(fmt.Sprintf(err.Error())))
+		response.ErrFromSwagger(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// 调用应用层
 	user, err := u.UserApp.Register(registerParams)
 	if err != nil {
-		response.Err(c, http.StatusInternalServerError, err.Error())
-		//response.ErrFromSwagger(c, http.StatusInternalServerError, err.Error())
-		//httputil.NewError(c, http.StatusInternalServerError, errors.New(fmt.Sprintf(err.Error())))
+		response.ErrFromSwagger(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 

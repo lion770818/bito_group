@@ -6,6 +6,24 @@ definitions:
       username:
         type: string
     type: object
+  model.S2C_Login:
+    properties:
+      token:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  response.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -27,11 +45,15 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
-        "500":
-          description: fail
+            $ref: '#/definitions/model.S2C_Login'
+        "400":
+          description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/response.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.HTTPError'
       summary: 註冊帳號
       tags:
       - example
