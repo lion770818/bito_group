@@ -132,7 +132,7 @@ func (r *MysqlUserRepo) Save(user *model.User) (*model.User, error) {
 // 約會配對核心計算
 func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_MatchPeople, error) {
 
-	logs.Debugf("MysqlUserRepo::QuerySinglePeople")
+	//logs.Debugf("MysqlUserRepo::QuerySinglePeople")
 	var matchlist []model.S2C_MatchPeople
 
 	if len(check.Username) == 0 {
@@ -148,7 +148,7 @@ func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S
 		return nil, ErrUserHeight
 	}
 
-	logs.Debugf("QuerySinglePeople check%+v", check)
+	//logs.Debugf("QuerySinglePeople check%+v", check)
 	/*
 	   匹配規則如下：
 	   - 單一人有四個輸入參數：姓名、身高、性別、人數 想要約會。
@@ -213,7 +213,7 @@ func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S
 				TeamMemberB: teamMemberB,
 			}
 
-			logs.Debugf("matchTeam:%+v", matchTeam)
+			//logs.Debugf("matchTeam:%+v", matchTeam)
 
 			matchlist = append(matchlist, matchTeam)
 
