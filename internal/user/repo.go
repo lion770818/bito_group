@@ -164,15 +164,15 @@ func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S
 		if isFind {
 			break
 		}
+		// relu 檢查人數
+		if needCountNow >= check.NeedCount {
+			break // 人數已滿
+		}
 		// relu 檢查是否是自己
 		if value.Username.Value() == check.Username {
 			continue // 無法自己一組
 		}
-
-		if needCountNow >= check.NeedCount {
-			break // 人數已滿
-		}
-
+		// relu 檢查性別
 		if value.Gender.Value() == check.Gender {
 			continue // 無法同性別一組
 		}
@@ -180,13 +180,13 @@ func (r *MysqlUserRepo) QuerySinglePeople(check model.UserQueryCheck) ([]model.S
 		// 根據性別做出篩選規則
 		switch check.Gender {
 		case model.Gender_Male: // 男性
-			if check.Height < value.Height.Value() {
+			if check.Height > value.Height.Value() {
 
 				// 找到了
 				isFind = true
 			}
 		case model.Gender_Woman: // 女性
-			if check.Height >= value.Height.Value() {
+			if check.Height <= value.Height.Value() {
 
 				// 找到了
 				isFind = true

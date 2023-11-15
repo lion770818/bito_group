@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   bito_group:
-    image: liuleo/bito_group:v2
+    image: liuleo/bito_group:v3
     restart: always
     container_name: bito_group
     volumes:
@@ -20,4 +20,3 @@ services:
       - Redis_Port=6379
     ports:
       - "8080:8080"
- 

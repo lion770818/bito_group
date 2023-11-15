@@ -39,3 +39,11 @@ windos => 環境變數內設定
 # post man 測試 api 腳本, 請匯入 postman
 
 bito_group.postman_collection.json
+
+# 編譯 docker image
+
+cd docker
+./buildImage.sh
+
+**啟動 docker**
+docker-compose up -d
