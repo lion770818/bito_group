@@ -1,6 +1,7 @@
 package config
 
 type Config struct {
+	Mode  Web   `yaml:"web"`
 	Web   Web   `yaml:"web"`
 	Mysql Mysql `yaml:"mysql"`
 	Auth  Auth  `yaml:"auth"`
@@ -8,6 +9,7 @@ type Config struct {
 	Log   Log   `yaml:"log"`
 }
 type Web struct {
+	Mode string `yaml:"mode"`
 	Port string `yaml:"port"`
 }
 

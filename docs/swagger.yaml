@@ -1,9 +1,29 @@
 definitions:
   model.C2S_Register:
     properties:
+      gender:
+        description: 性別
+        type: integer
+      height:
+        description: 身高
+        type: integer
       password:
+        description: 用戶密碼
         type: string
       username:
+        description: 姓名
+        type: string
+    type: object
+  model.C2S_Register_Base:
+    properties:
+      gender:
+        description: 性別
+        type: integer
+      height:
+        description: 身高
+        type: integer
+      username:
+        description: 姓名
         type: string
     type: object
   model.S2C_Login:
@@ -15,11 +35,36 @@ definitions:
       username:
         type: string
     type: object
+  model.S2C_MatchPeople:
+    properties:
+      team_index:
+        description: MatchPeopleList []MatchPeople `json:"match_people_list"`
+        type: integer
+      teamMemberA:
+        $ref: '#/definitions/model.C2S_Register_Base'
+      teamMemberB:
+        $ref: '#/definitions/model.C2S_Register_Base'
+    type: object
   model.UserCheck:
     properties:
       userId:
         type: integer
       username:
+        type: string
+    type: object
+  model.UserQueryCheck:
+    properties:
+      gender:
+        description: 性別
+        type: integer
+      height:
+        description: 身高
+        type: integer
+      needCount:
+        description: 需要人數
+        type: integer
+      username:
+        description: 用戶名
         type: string
     type: object
   response.HTTPError:
@@ -76,14 +121,14 @@ paths:
         name: message
         required: true
         schema:
-          $ref: '#/definitions/model.C2S_Register'
+          $ref: '#/definitions/model.UserQueryCheck'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.S2C_Login'
+            $ref: '#/definitions/model.S2C_MatchPeople'
         "400":
           description: Bad Request
           schema:

@@ -9,12 +9,14 @@ import (
 // domain 领域对象
 
 var (
-	DefaultUserIDValue   = "0"
-	DefaultUsernameValue = ""
-	DefaultPasswordValue = ""
-	DefaultCurrencyValue = "CNY"
-	DefaultAmountValue   = decimal.NewFromFloat(0)
-	DefaultFeeValue, _   = NewAmount(decimal.NewFromFloat(0))
+	DefaultUserIDValue     = "0"
+	DefaultUsernameValue   = ""
+	DefaultUserGenderValue = 0
+	DefaultUserHeightValue = 0
+	DefaultPasswordValue   = ""
+	DefaultCurrencyValue   = "CNY"
+	DefaultAmountValue     = decimal.NewFromFloat(0)
+	DefaultFeeValue, _     = NewAmount(decimal.NewFromFloat(0))
 )
 
 var (
@@ -108,6 +110,44 @@ func (u *Username) Value() string {
 	return u.value
 }
 
+type Gender struct {
+	value int
+}
+
+func NewGender(gender int) (*Gender, error) {
+	// 省略参数检查
+	return &Gender{
+		value: gender,
+	}, nil
+}
+
+func (u *Gender) Value() int {
+	if u == nil {
+		return DefaultUserGenderValue
+	}
+
+	return u.value
+}
+
+type Height struct {
+	value int
+}
+
+func NewHeight(height int) (*Height, error) {
+	// 省略参数检查
+	return &Height{
+		value: height,
+	}, nil
+}
+
+func (u *Height) Value() int {
+	if u == nil {
+		return DefaultUserGenderValue
+	}
+
+	return u.value
+}
+
 type Password struct {
 	value string
 }
@@ -174,6 +214,9 @@ func (m *Amount) Add(amount *Amount) *Amount {
 type User struct {
 	ID       *UserID
 	Username *Username
+	Gender   *Gender // 性別
+	Height   *Height // 身高
+
 	Password *Password
 	Currency *Currency
 	Amount   *Amount
@@ -216,6 +259,8 @@ func (u *User) ToUserInfo() *S2C_UserInfo {
 	return &S2C_UserInfo{
 		UserID:   u.ID.Value(),
 		Username: u.Username.Value(),
+		Gender:   u.Gender.Value(),
+		Height:   u.Height.Value(),
 		Amount:   u.Amount.Value().String(),
 		Currency: u.Currency.Value(),
 	}
@@ -226,6 +271,8 @@ func (u *User) ToPO() *UserPO {
 	return &UserPO{
 		ID:       u.ID.Value(),
 		Username: u.Username.Value(),
+		Gender:   u.Gender.Value(),
+		Height:   u.Height.Value(),
 		Password: u.Password.Value(),
 		Currency: u.Currency.Value(),
 		Amount:   u.Amount.Value(),
@@ -240,12 +287,16 @@ type LoginParams struct {
 type RegisterParams struct {
 	Username *Username
 	Password *Password
+	Gender   *Gender // 性別
+	Height   *Height // 身高
 }
 
 func (c *RegisterParams) ToDomain() *User {
 	return &User{
 		Username: c.Username,
 		Password: c.Password,
+		Gender:   c.Gender,
+		Height:   c.Height,
 	}
 }
 
@@ -264,8 +315,10 @@ func (r *Rate) Exchange(amount *Amount) (*Amount, error) {
 	return NewAmount(amount.Value().Mul(r.rate))
 }
 
+// 用來批配 尋找最多 N 個可能匹配的單身人士 條件
 type UserQueryCheck struct {
-	Username string // 用戶名
-	Gender   string // 性別
-	Height   int    // 身高
+	Username  string // 用戶名
+	Gender    int    // 性別
+	Height    int    // 身高
+	NeedCount int    // 需要人數
 }

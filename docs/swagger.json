@@ -70,7 +70,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.C2S_Register"
+                            "$ref": "#/definitions/model.UserQueryCheck"
                         }
                     }
                 ],
@@ -78,7 +78,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/model.S2C_Login"
+                            "$ref": "#/definitions/model.S2C_MatchPeople"
                         }
                     },
                     "400": {
@@ -147,10 +147,37 @@
         "model.C2S_Register": {
             "type": "object",
             "properties": {
+                "gender": {
+                    "description": "性別",
+                    "type": "integer"
+                },
+                "height": {
+                    "description": "身高",
+                    "type": "integer"
+                },
                 "password": {
+                    "description": "用戶密碼",
                     "type": "string"
                 },
                 "username": {
+                    "description": "姓名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.C2S_Register_Base": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "description": "性別",
+                    "type": "integer"
+                },
+                "height": {
+                    "description": "身高",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "姓名",
                     "type": "string"
                 }
             }
@@ -169,6 +196,21 @@
                 }
             }
         },
+        "model.S2C_MatchPeople": {
+            "type": "object",
+            "properties": {
+                "teamMemberA": {
+                    "$ref": "#/definitions/model.C2S_Register_Base"
+                },
+                "teamMemberB": {
+                    "$ref": "#/definitions/model.C2S_Register_Base"
+                },
+                "team_index": {
+                    "description": "MatchPeopleList []MatchPeople `json:\"match_people_list\"`",
+                    "type": "integer"
+                }
+            }
+        },
         "model.UserCheck": {
             "type": "object",
             "properties": {
@@ -176,6 +218,27 @@
                     "type": "integer"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserQueryCheck": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "description": "性別",
+                    "type": "integer"
+                },
+                "height": {
+                    "description": "身高",
+                    "type": "integer"
+                },
+                "needCount": {
+                    "description": "需要人數",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用戶名",
                     "type": "string"
                 }
             }

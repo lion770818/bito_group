@@ -9,9 +9,10 @@ import (
 func TestQuerySinglePeople(t *testing.T) {
 
 	check := model.UserQueryCheck{
-		Username: "cat111",
-		Gender:   "男",
-		Height:   175,
+		Username:  "cat111",
+		Gender:    model.Gender_Male,
+		Height:    175,
+		NeedCount: 0,
 	}
 
 	userRepo := NewMysqlUserRepo(nil)

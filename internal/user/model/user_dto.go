@@ -32,22 +32,35 @@ type S2C_Login struct {
 }
 
 type S2C_UserInfo struct {
-	UserID   int64  `json:"user_id"`
-	Username string `json:"username"`
-	Gender   string `json:"gender"`
-	Height   string `json:"height"`
+	UserID   int64  `json:"user_id"`  // 用戶唯一Id
+	Username string `json:"username"` // 姓名
+	Gender   int    `json:"gender"`   // 性別
+	Height   int    `json:"height"`   // 身高
 
 	Currency string `json:"currency"`
 	Amount   string `json:"amount"`
 }
 
+type C2S_Register_Base struct {
+	Username string `json:"username"` // 姓名
+	Gender   int    `json:"gender"`   // 性別
+	Height   int    `json:"height"`   // 身高
+}
 type C2S_Register struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	C2S_Register_Base
+	Password string `json:"password"` // 用戶密碼
 }
 
 func (c *C2S_Register) ToDomain() (*RegisterParams, error) {
 	username, err := NewUsername(c.Username)
+	if err != nil {
+		return nil, err
+	}
+	gender, err := NewGender(c.Gender)
+	if err != nil {
+		return nil, err
+	}
+	height, err := NewHeight(c.Height)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +72,24 @@ func (c *C2S_Register) ToDomain() (*RegisterParams, error) {
 	return &RegisterParams{
 		Username: username,
 		Password: password,
+		Gender:   gender,
+		Height:   height,
 	}, nil
+}
+
+//
+type MatchPeople struct {
+	TeamIndex   int64 `json:"team_index"` // 組隊編號
+	TeamMemberA C2S_Register_Base
+	TeamMemberB C2S_Register_Base
+}
+
+// S2C_Login Web登录响应
+type S2C_MatchPeople struct {
+	//MatchPeopleList []MatchPeople `json:"match_people_list"`
+	TeamIndex   int               `json:"team_index"` // 組隊編號
+	TeamMemberA C2S_Register_Base `json:"teamMemberA"`
+	TeamMemberB C2S_Register_Base `json:"teamMemberB"`
 }
 
 type C2S_Transfer struct {

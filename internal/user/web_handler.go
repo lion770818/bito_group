@@ -145,6 +145,8 @@ func (u *UserHandler) AddSinglePersonAndMatch(c *gin.Context) {
 		return
 	}
 
+	logs.Debugf("AddSinglePersonAndMatch reg:%+v", req)
+
 	// 转化为领域对象 + 参数验证
 	registerParams, err := req.ToDomain()
 	if err != nil {
@@ -169,39 +171,28 @@ func (u *UserHandler) AddSinglePersonAndMatch(c *gin.Context) {
 // @Tags user
 // @Accept json
 // @Produce json
-// @Param			message	body	model.C2S_Register		true		"要匹配的單身人士"
-// @Success 	200 	{object} 	model.S2C_Login
+// @Param			message	body	model.UserQueryCheck		true		"要匹配的單身人士"
+// @Success 	200 	{object} 	model.S2C_MatchPeople
 // @Failure     500		{object}	response.HTTPError
 // @Failure     400		{object}	response.HTTPError
 // @Router /v1/QuerySinglePeople [post]
 func (u *UserHandler) QuerySinglePeople(c *gin.Context) {
 
-	req := &model.UserCheck{}
+	req := &model.UserQueryCheck{}
 	if err := c.ShouldBindJSON(req); err != nil {
+		logs.Errorf("ShouldBindJSON failed, err: %+v", err)
 		response.Err(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	userID, err := model.NewUserID(*req)
+	// 尋找匹配的約會對象
+	matchPeople, err := u.UserApp.QuerySinglePeople(*req)
 	if err != nil {
-		response.Err(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	userInfo, err := u.UserApp.Get(userID)
-	if err != nil {
-		logs.Errorf("[UserInfo] failed, err: %+v", err)
-		response.Err(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	err = u.UserApp.Del(userID)
-	if err != nil {
-		logs.Errorf("[UserInfo] failed, err: %+v", err)
+		logs.Errorf("QuerySinglePeople failed, err: %+v", err)
 		response.Err(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	// 返回用户信息
-	response.Ok(c, userInfo)
+	response.Ok(c, matchPeople)
 }

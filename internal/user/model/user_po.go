@@ -15,6 +15,8 @@ var (
 type UserPO struct {
 	ID       int64
 	Username string
+	Gender   int
+	Height   int
 	Password string
 	Currency string
 	Amount   decimal.Decimal `gorm:"type:decimal(20,2);"`

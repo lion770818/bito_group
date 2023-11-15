@@ -17,7 +17,7 @@ type UserAppInterface interface {
 
 	Get(userID *model.UserID) (*model.S2C_UserInfo, error)
 	Del(userID *model.UserID) error
-	QuerySinglePeople(model.UserQueryCheck) ([]model.S2C_UserInfo, error)
+	QuerySinglePeople(model.UserQueryCheck) ([]model.S2C_MatchPeople, error) // S2C_MatchPeople
 }
 
 type UserApp struct {
@@ -60,6 +60,8 @@ func (u *UserApp) Register(register *model.RegisterParams) (*model.S2C_Login, er
 		return nil, ErrUserAlreadyExists
 	}
 
+	logs.Debugf("Register Username:%s, Gender:%d, Height:%d", register.Username, register.Gender, register.Height)
+
 	// 注册
 	user, err := u.userRepo.Save(register.ToDomain())
 	if err != nil {
@@ -94,7 +96,9 @@ func (u *UserApp) Del(userID *model.UserID) error {
 	return err
 }
 
-func (u *UserApp) QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_UserInfo, error) {
+// 匹配約會對象
+func (u *UserApp) QuerySinglePeople(check model.UserQueryCheck) ([]model.S2C_MatchPeople, error) {
 
-	return nil, nil
+	logs.Debugf("UserApp::QuerySinglePeople")
+	return u.userRepo.QuerySinglePeople(check)
 }

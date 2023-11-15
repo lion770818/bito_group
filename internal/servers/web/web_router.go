@@ -11,12 +11,6 @@ func WithRouter(s *WebServer) {
 
 	// 新建 handler
 	userHandler := user.NewUserHandler(s.Apps.UserApp)
-	//authMiddleware := user.NewAuthMiddleware(s.Apps.UserApp)
-
-	// 驗證
-	// auth := s.Engin.Group("/auth")
-	// auth.POST("/login", userHandler.Login)
-	// auth.POST("/register", userHandler.Register)
 
 	// api
 	api := s.Engin.Group("/v1")

@@ -28,6 +28,8 @@ func main() {
 	// 初始化日志
 	logs.Init(cfg.Log)
 
+	logs.Debugf("mode=%+v", cfg.Web)
+
 	// 獲得 servers, 比如 WebServer, Websocket, RpcServer
 	servers := NewServers(cfg)
 

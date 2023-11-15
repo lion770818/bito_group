@@ -44,8 +44,9 @@ func (s *WebServer) Stop() {
 
 func NewWebServer(cfg *config.SugaredConfig, apps *servers.Apps) servers.ServerInterface {
 
-	logs.Debugf("創建 web server poet:%s", cfg.Web.Port)
+	logs.Debugf("創建 web server mode:%s poet:%s", cfg.Web.Mode, cfg.Web.Port)
 
+	gin.SetMode(cfg.Web.Mode)
 	e := gin.Default()
 	e.Use(cors.Default())
 
