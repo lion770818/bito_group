@@ -9,7 +9,12 @@ import (
 	"net/http"
 	"time"
 
+	_ "bito_group/docs"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
 )
 
@@ -42,6 +47,7 @@ func NewWebServer(cfg *config.SugaredConfig, apps *servers.Apps) servers.ServerI
 	logs.Debugf("創建 web server poet:%s", cfg.Web.Port)
 
 	e := gin.Default()
+	e.Use(cors.Default())
 
 	httpServer := &http.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Web.Port),
@@ -53,6 +59,11 @@ func NewWebServer(cfg *config.SugaredConfig, apps *servers.Apps) servers.ServerI
 		Engin:      e,
 		Apps:       apps,
 	}
+
+	// 設定swgger
+	urlStr := "http://localhost:" + cfg.Web.Port + "/swagger/doc.json"
+	url := ginSwagger.URL(urlStr) // The url pointing to API definition
+	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	// 注册路由
 	WithRouter(s)

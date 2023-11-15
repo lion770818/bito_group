@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/Allenxuxu/gev v0.5.0
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/jinzhu/gorm v1.9.16
@@ -11,11 +12,15 @@ require (
 	github.com/shopspring/decimal v1.3.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.17.0
+	github.com/swaggo/files v1.0.1
+	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.2
+	github.com/swaggo/swag/example/celler v0.0.0-20231107073554-c7c63fcd1d02
 	go.uber.org/zap v1.21.0
 )
 
 require (
+	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

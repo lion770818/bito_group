@@ -1,19 +1,129 @@
+definitions:
+  model.C2S_Register:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.S2C_Login:
+    properties:
+      token:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  model.UserCheck:
+    properties:
+      userId:
+        type: integer
+      username:
+        type: string
+    type: object
+  response.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /example/helloworld:
-    get:
+  /v1/AddSinglePersonAndMatch:
+    post:
       consumes:
       - application/json
-      description: do ping
+      description: Add a new user to the matching system and find any possible matches
+        for the new user
+      parameters:
+      - description: 要註冊的帳號
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.C2S_Register'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
-      summary: ping example
+            $ref: '#/definitions/model.S2C_Login'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.HTTPError'
+      summary: 註冊帳號
       tags:
-      - example
+      - user
+  /v1/QuerySinglePeople:
+    post:
+      consumes:
+      - application/json
+      description: 'QuerySinglePeople : Find the most N possible matched single people'
+      parameters:
+      - description: 要匹配的單身人士
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.C2S_Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.S2C_Login'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.HTTPError'
+      summary: 尋找最多 N 個可能匹配的單身人士
+      tags:
+      - user
+  /v1/RemoveSinglePerson:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a user from the matching system so that the user cannot
+        be matched anymore
+      parameters:
+      - description: 要檢查的帳號
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserCheck'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.S2C_Login'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.HTTPError'
+      summary: 移除帳號
+      tags:
+      - user
 swagger: "2.0"
